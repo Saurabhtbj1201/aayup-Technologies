@@ -9,19 +9,26 @@ const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // Fix CORS configuration - allow specific origins dynamically
-const allowedOrigins = process.env.CORS_ORIGINS 
-  ? process.env.CORS_ORIGINS.split(',').map(origin => origin.trim())
-  : [];
+const defaultOrigins = [
+  'https://www.aayuptechnologies.com',
+  'https://aayuptechnologies.com',
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+];
+
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? [...new Set([...process.env.CORS_ORIGINS.split(',').map(o => o.trim()), ...defaultOrigins])]
+  : defaultOrigins;
 
 app.use(cors({
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
+
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, false);
+      callback(new Error(`CORS blocked: ${origin}`));
     }
   },
   credentials: true,
