@@ -325,7 +325,7 @@ Passionate software developer crafting modern web experiences with cutting-edge 
 ### 📧 Contact
 
 For any inquiries or collaboration opportunities, reach out at:  
-📩 **Saurabhtbj143@outlook.com**
+📩 **aayup.technologies.010@gmail.com**
 
 ---
 
