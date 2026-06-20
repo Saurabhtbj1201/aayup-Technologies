@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { MessageSquare, Mic, Send, X } from "lucide-react";
 
 type Message = {
@@ -19,11 +19,15 @@ function speak(text: string) {
 
 function useSpeechRecognition(onResult: (transcript: string) => void) {
   const recognitionRef = useRef<any>(null);
+  const [available, setAvailable] = useState(false);
 
   useEffect(() => {
     const w: any = window as any;
     const SpeechRecognition = w.SpeechRecognition || w.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) {
+      setAvailable(false);
+      return;
+    }
     const rec = new SpeechRecognition();
     rec.lang = "en-US";
     rec.interimResults = false;
@@ -33,19 +37,33 @@ function useSpeechRecognition(onResult: (transcript: string) => void) {
       onResult(t);
     };
     recognitionRef.current = rec;
+    setAvailable(true);
 
     return () => {
       try {
         rec.onresult = null;
         rec.stop();
       } catch (e) {}
+      recognitionRef.current = null;
+      setAvailable(false);
     };
+    // onResult intentionally part of deps to recreate if handler changes
   }, [onResult]);
 
   const start = () => recognitionRef.current && recognitionRef.current.start();
   const stop = () => recognitionRef.current && recognitionRef.current.stop();
 
-  return { start, stop, available: !!recognitionRef.current };
+  return { start, stop, available };
+}
+
+// simple rule-based replies (kept outside component so it's stable)
+function generateReply(userText: string) {
+  const lower = userText.toLowerCase();
+  if (lower.includes("pricing")) return "Our pricing depends on the project scope — please share some details and we'll provide a quote.";
+  if (lower.includes("services")) return "We offer web & mobile development, UI/UX design, API integration, AI training for students and more.";
+  if (lower.includes("whatsapp") || lower.includes("chat")) return "You can message us directly on WhatsApp at +91 70308 39883 for quick responses.";
+  if (lower.includes("hello") || lower.includes("hi")) return "Hello! How can I assist you today?";
+  return "Thanks for your message — a team member will get back to you shortly. Meanwhile, could you share a few more details?";
 }
 
 const Chatbot: React.FC = () => {
@@ -59,22 +77,7 @@ const Chatbot: React.FC = () => {
 
   const messagesRef = useRef<HTMLDivElement | null>(null);
 
-  const onSpeechResult = (transcript: string) => {
-    setListening(false);
-    if (!transcript) return;
-    sendMessage(transcript);
-  };
-
-  const { start, stop, available } = useSpeechRecognition(onSpeechResult);
-
-  useEffect(() => {
-    if (open === false) return;
-    // scroll to bottom when new messages added
-    const el = messagesRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [messages, open]);
-
-  const sendMessage = (text: string) => {
+  const sendMessage = useCallback((text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
     const userMsg: Message = { id: Date.now().toString(), sender: "user", text: trimmed };
@@ -83,7 +86,7 @@ const Chatbot: React.FC = () => {
 
     // fake bot reply (replace with API call if needed)
     setBotTyping(true);
-    setTimeout(() => {
+    const t = setTimeout(() => {
       const reply = generateReply(trimmed);
       const botMsg: Message = { id: `b-${Date.now()}`, sender: "bot", text: reply };
       setMessages((m) => [...m, botMsg]);
@@ -91,16 +94,30 @@ const Chatbot: React.FC = () => {
       // speak reply
       speak(reply);
     }, 900 + Math.min(trimmed.length * 20, 1200));
-  };
 
-  const generateReply = (userText: string) => {
-    const lower = userText.toLowerCase();
-    if (lower.includes("pricing")) return "Our pricing depends on the project scope — please share some details and we'll provide a quote.";
-    if (lower.includes("services")) return "We offer web & mobile development, UI/UX design, API integration, AI training for students and more.";
-    if (lower.includes("whatsapp") || lower.includes("chat")) return "You can message us directly on WhatsApp at +91 70308 39883 for quick responses.";
-    if (lower.includes("hello") || lower.includes("hi")) return "Hello! How can I assist you today?";
-    return "Thanks for your message — a team member will get back to you shortly. Meanwhile, could you share a few more details?";
-  };
+    return () => clearTimeout(t);
+  }, []);
+
+  const onSpeechResult = useCallback((transcript: string) => {
+    setListening(false);
+    if (!transcript) return;
+    sendMessage(transcript);
+  }, [sendMessage]);
+
+  const { start, stop, available } = useSpeechRecognition(onSpeechResult);
+
+  useLayoutEffect(() => {
+    if (open === false) return;
+    const el = messagesRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      try {
+        el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' as ScrollBehavior });
+      } catch (e) {
+        el.scrollTop = el.scrollHeight;
+      }
+    });
+  }, [messages, open]);
 
   const toggleListen = () => {
     if (!available) return;
@@ -124,7 +141,7 @@ const Chatbot: React.FC = () => {
       {/* Floating button */}
       <div className="fixed bottom-6 right-6 z-50">
         {open && (
-          <div className="w-80 md:w-96 bg-background/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden transform transition-all duration-200 scale-100 opacity-100">
+          <div className="w-[min(92vw,24rem)] sm:w-80 md:w-96 bg-background/80 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden transform transition-all duration-200 scale-100 opacity-100">
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary to-secondary text-white">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white">

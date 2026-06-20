@@ -229,3 +229,19 @@ section {
   min-height: 60vh;
   scroll-margin-top: 80px;
 }
+
+/* Additional Services specific spacing to prevent heading overlap */
+.pricing-additional h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.45;
+}
+.pricing-additional ul {
+  margin-top: 0.75rem;
+}
+.pricing-additional li {
+  margin-bottom: 0.5rem;
+}
+.pricing-additional {
+  overflow: visible;
+}

@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Careers from "./pages/Careers";
+import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./pages/ProjectDetail";
 import Chatbot from "./components/Chatbot";
@@ -62,6 +63,7 @@ const App = () => {
             <Route path="/blog/:id" element={<BlogDetail />} />
             <Route path="/projects/:id" element={<ProjectDetail />} />
             <Route path="/careers" element={<Careers />} />
+            <Route path="/pricing" element={<Pricing />} />
             
             {/* Admin Routes */}
             <Route path="/admin" element={<AdminDashboard />} />
