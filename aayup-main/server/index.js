@@ -136,7 +136,7 @@ app.post('/api/send-contact-email', async (req, res) => {
         <ul style="margin: 0; padding-left: 20px; color: #1e40af; font-size: 14px; line-height: 1.8;">
           <li>Response within <strong>24-48 hours</strong></li>
           <li>Detailed email reply</li>
-          <li>Call us: <a href="tel:+917030839883" style="color: #6366f1; text-decoration: none; font-weight: 600;">+91 70308 39883</a></li>
+          <li>Call us: <a href="tel:+918382984709" style="color: #6366f1; text-decoration: none; font-weight: 600;">+91 83829 84709</a></li>
         </ul>
       </div>
     `;

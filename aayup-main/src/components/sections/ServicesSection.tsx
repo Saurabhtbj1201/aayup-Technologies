@@ -509,8 +509,16 @@ function StudentProgramButton() {
 
 // ServiceCard with move effect on hover
 function ServiceCard({ service, index }) {
+  const slug = service.title.toLowerCase().replace(/\s+/g, "-");
+
   return (
-    <div className="glass-card p-6 transition-transform duration-300 group cursor-pointer hover:-translate-y-2">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => (window.location.href = `/pricing#${slug}`)}
+      onKeyDown={(e) => (e.key === "Enter" ? (window.location.href = `/pricing#${slug}`) : null)}
+      className="glass-card p-6 transition-transform duration-300 group cursor-pointer hover:-translate-y-2"
+    >
       <div className="w-14 h-14 mb-4 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
         <service.icon className="w-7 h-7 text-white" />
       </div>

@@ -218,6 +218,16 @@ const Navigation = () => {
               )
             )}
 
+            {/* CTA Button */}
+            <Link to="/pricing" className="ml-2">
+              <Button
+                size="sm"
+                className="rounded-full px-4 py-2 shadow-lg transform transition-transform hover:scale-105 bg-gradient-to-r from-primary to-secondary text-primary-foreground"
+              >
+                Get Quote
+              </Button>
+            </Link>
+
             {/* User/Admin Dropdown */}
             <div
               ref={dropdownRef}
@@ -377,6 +387,9 @@ const Navigation = () => {
                 </Button>
               )}
               <ThemeToggle />
+              <a href="/pricing" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button className="w-full mt-2 rounded-full bg-gradient-to-r from-primary to-secondary text-primary-foreground">Get Quote</Button>
+              </a>
             </div>
           </div>
         )}

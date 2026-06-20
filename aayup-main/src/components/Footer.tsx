@@ -62,7 +62,7 @@ const Footer = () => {
                 <Mail className="w-5 h-5 text-blue-500 group-hover:text-white transition-colors" />
               </a>
               <a
-                href="https://wa.me/917030839883"
+                href="https://wa.me/918382984709"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-green-500/10 hover:bg-green-500 rounded-lg flex items-center justify-center transition-all group border border-green-500/20"
@@ -74,7 +74,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="tel:+917030839883"
+                href="tel:+918382984709"
                 className="w-10 h-10 bg-indigo-500/10 hover:bg-indigo-500 rounded-lg flex items-center justify-center transition-all group border border-indigo-500/20"
                 title="Call Us"
               >
@@ -87,8 +87,8 @@ const Footer = () => {
               </a>
             </p>
             <p className="text-foreground/70 text-sm">
-              <a href="tel:+917030839883" className="hover:text-primary transition-colors">
-                +91 70308 39883
+              <a href="tel:+918382984709" className="hover:text-primary transition-colors">
+                +91 83829 84709
               </a>
             </p>
           </div>
