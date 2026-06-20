@@ -1,4 +1,4 @@
-import { Code2, Smartphone, Palette, Database, Cloud, FileText, Lightbulb, MessageSquare, Info, GraduationCap, X, Briefcase, BookOpen, Users, Target, CheckCircle, Sparkles, TrendingUp, Award } from "lucide-react";
+import { Code2, Smartphone, Palette, Database, Cloud, FileText, Lightbulb, MessageSquare, Info, GraduationCap, X, Briefcase, BookOpen, Users, Target, CheckCircle, Sparkles, TrendingUp, Award, Zap, Globe, Gift } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -45,6 +45,26 @@ const ServicesSection = () => {
       icon: MessageSquare,
       title: "Communication Training",
       description: "Professional communication and leadership skills for students",
+    },
+    {
+      icon: Zap,
+      title: "Business Advertisement",
+      description: "Convert Clicks into Customers. Our advertising strategies are built for ROI with campaigns that reach and motivate your audience and more.",
+    },
+    {
+      icon: Smartphone,
+      title: "Social Media Management",
+      description: "Build Your Brand, One Post at a Time. Forge stronger connections through curated, strategic social media content and engagement and more.",
+    },
+    {
+      icon: Globe,
+      title: "SEO Services",
+      description: "Be Found Where It Matters. Our SEO delivers sustainable organic visibility with clear, measurable progress through white-hat techniques and more.",
+    },
+    {
+      icon: Gift,
+      title: "Business Card Design",
+      description: "Make a Strong First Impression. We design premium, modern, and brand-focused business cards that reflect your identity and professionalism.",
     },
   ];
 
@@ -311,7 +331,7 @@ function StudentProgramButton() {
   };
 
   return (
-    <>
+    < >
       <button
         className="bg-gradient-to-r from-primary to-secondary text-white px-8 py-4 rounded-xl shadow-lg hover:opacity-90 transition-all text-lg font-semibold flex items-center gap-2 hover:scale-105"
         onClick={() => setShow(true)}
@@ -489,8 +509,16 @@ function StudentProgramButton() {
 
 // ServiceCard with move effect on hover
 function ServiceCard({ service, index }) {
+  const slug = service.title.toLowerCase().replace(/\s+/g, "-");
+
   return (
-    <div className="glass-card p-6 transition-transform duration-300 group cursor-pointer hover:-translate-y-2">
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => (window.location.href = `/pricing#${slug}`)}
+      onKeyDown={(e) => (e.key === "Enter" ? (window.location.href = `/pricing#${slug}`) : null)}
+      className="glass-card p-6 transition-transform duration-300 group cursor-pointer hover:-translate-y-2"
+    >
       <div className="w-14 h-14 mb-4 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
         <service.icon className="w-7 h-7 text-white" />
       </div>

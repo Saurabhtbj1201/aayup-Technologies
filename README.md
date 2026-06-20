@@ -263,7 +263,7 @@ This project is proprietary and confidential.
 ## 👥 Team
 
 **Aayup Technologies**
-- Website: [aayup.vercel.app](https://aayup.vercel.app)
+- Website: [www.aayuptechnologies.com](www.aayuptechnologies.com/)
 - Email: aayup.technologies.010@gmail.com
 - LinkedIn: [Aayup Technology](https://www.linkedin.com/in/aayup-technology-a030a5372)
 - Instagram: [@aayup.technologies](https://www.instagram.com/aayup.technologies)
